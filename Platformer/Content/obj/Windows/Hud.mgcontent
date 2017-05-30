@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>/Users/afar0835/Projects/Platformer/Platformer/Content/Hud.spritefont</SourceFile>
+  <SourceTime>2017-05-18T08:59:24-06:00</SourceTime>
+  <DestFile>/Users/afar0835/Projects/Platformer/Platformer/Content/bin/Windows/Hud.xnb</DestFile>
+  <DestTime>2017-05-18T09:10:30-06:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2016-03-30T00:36:22-06:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2016-03-30T00:36:22-06:00</ProcessorTime>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Compressed</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>
