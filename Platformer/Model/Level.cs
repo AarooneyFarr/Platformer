@@ -523,8 +523,8 @@ namespace Platformer.Model
 
 			ScrollCamera(spriteBatch.GraphicsDevice.Viewport);
 			Matrix cameraTransform = Matrix.CreateTranslation(-cameraPosition , 0.0f , 0.0f);
-			spriteBatch.Begin(SpriteBlendMode.AlphaBlend , SpriteSortMode.Immediate , SaveStateMode.None , cameraTransform);
-
+			//spriteBatch.Begin(SpriteBlendMode.AlphaBlend , SpriteSortMode.Immediate , SaveStateMode.None , cameraTransform);
+			spriteBatch.Begin(SpriteSortMode.Immediate , BlendState.AlphaBlend , null , null , null , null , cameraTransform);
 
 			DrawTiles(spriteBatch);
 
