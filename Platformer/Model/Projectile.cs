@@ -10,10 +10,24 @@ namespace Platformer.Model
 {
 	public class Projectile
 	{
-		
+
 
 		// Image representing the Projectile
 		public Texture2D Texture;
+
+		private Rectangle localBounds;
+		/// <summary>
+		/// Gets a rectangle which bounds this player in world space.
+		/// </summary>
+		public Rectangle BoundingRectangle
+		{
+			get
+			{
+
+
+				return Texture.Bounds;
+			}
+		}
 
 		// Position of the Projectile relative to the upper left side of the screen
 		public Vector2 Position;
@@ -51,7 +65,7 @@ namespace Platformer.Model
 
 		public void loadContent()
 		{
-			
+
 		}
 
 		public void Initialize(Texture2D texture , Vector2 position)

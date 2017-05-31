@@ -41,6 +41,8 @@ namespace Platformer.Model
 
 		private List<Gem> gems = new List<Gem>();
 		private List<Enemy> enemies = new List<Enemy>();
+		public List<Projectile> bullets = new List<Projectile>();
+
 
 		// Key locations in the level.        
 		private Vector2 start;
@@ -405,7 +407,8 @@ namespace Platformer.Model
 				timeRemaining -= gameTime.ElapsedGameTime;
 				Player.Update(gameTime , keyboardState , gamePadState , orientation);
 				UpdateGems(gameTime);
-				player.UpdateBullets();
+				UpdateBullets(gameTime);
+
 
 				// Falling off the bottom of the level kills the player.
 				if(Player.BoundingRectangle.Top >= Height * Tile.Height)
@@ -449,6 +452,21 @@ namespace Platformer.Model
 		}
 
 		/// <summary>
+		/// Animates each bullet and checks to allows the player to collect them.
+		/// </summary>
+		private void UpdateBullets(GameTime gameTime)
+		{
+			for(int i = 0; i < bullets.Count; ++i)
+			{
+				Projectile bullet = bullets[i];
+
+				bullet.Update(/*gameTime*/);
+
+
+			}
+
+		}
+		/// <summary>
 		/// Animates each enemy and allow them to kill the player.
 		/// </summary>
 		private void UpdateEnemies(GameTime gameTime)
@@ -461,6 +479,19 @@ namespace Platformer.Model
 				if(enemy.BoundingRectangle.Intersects(Player.BoundingRectangle))
 				{
 					OnPlayerKilled(enemy);
+				}
+				foreach(Projectile bullet in bullets)
+				{
+					if(enemy.BoundingRectangle.Intersects(bullet.BoundingRectangle))
+					{
+						enemy.Health -= bullet.Damage;
+						bullet.Active = false;
+					}
+				}
+
+				if(enemy.Health >= 0)
+				{
+					enemy.IsAlive = false;
 				}
 			}
 		}
@@ -535,6 +566,9 @@ namespace Platformer.Model
 
 			foreach(Enemy enemy in enemies)
 				enemy.Draw(gameTime , spriteBatch);
+
+			foreach(Projectile bullet in bullets)
+				bullet.Draw(spriteBatch);
 
 			spriteBatch.End();
 

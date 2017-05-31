@@ -34,6 +34,13 @@ namespace Platformer.Model
 		}
 		Level level;
 
+		public int Health
+		{
+			get { return health; }
+			set { health = value; }
+		}
+		int health;
+
 		/// <summary>
 		/// Position in world space of the bottom center of this enemy.
 		/// </summary>
@@ -46,6 +53,7 @@ namespace Platformer.Model
 		public bool IsAlive
 		{
 			get { return isAlive; }
+			set { isAlive = value; }
 		}
 		bool isAlive;
 
@@ -98,6 +106,7 @@ namespace Platformer.Model
 			this.level = level;
 			this.position = position;
 			this.isAlive = true;
+			this.health = 50;
 
 			LoadContent(spriteSet);
 		}

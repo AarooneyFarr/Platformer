@@ -225,6 +225,7 @@ namespace Platformer.Model
 			// Clear input.
 			movement = 0.0f;
 			isJumping = false;
+			isShooting = false;
 		}
 
 		/// <summary>
@@ -266,6 +267,8 @@ namespace Platformer.Model
 				keyboardState.IsKeyDown(Keys.W);
 
 			isShooting = keyboardState.IsKeyDown(Keys.Space);
+
+
 		}
 
 		/// <summary>
@@ -455,27 +458,27 @@ namespace Platformer.Model
 			if(isShooting == true)
 			{
 				// Fire only every interval we set as the fireTime
- 			if(gameTime.TotalGameTime - previousFireTime > fireTime)
-			{
+ 			//if(gameTime.TotalGameTime - previousFireTime > fireTime)
+			//{
 				// Reset our current time
-				previousFireTime = gameTime.TotalGameTime;
+				//previousFireTime = gameTime.TotalGameTime;
 
 
-					AddBullet(this.position.X , this.position.Y , 2 , 0 , 0 , 0);
+					AddBullet(this.position.X , this.position.Y - 50 , 2 , 0 , 0 , 0);
 
 
 				
-			}
+			//}
 			
 			}
 		}
 
 		public void AddBullet(float x , float y , float speed , int gx , int gy , int angle)
 		{
-			Projectile projectile = new Projectile(x , y , speed , gx , gy , angle);
+			Projectile bullet = new Projectile(x , y , speed , gx , gy , angle);
 			Vector2 position = new Vector2(x , y);
-			projectile.Initialize(bulletTexture , position);
-			bullets.Add(projectile);
+			bullet.Initialize(bulletTexture , position);
+			level.bullets.Add(bullet);
 		}
 
 		public void UpdateBullets()
