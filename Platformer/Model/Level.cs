@@ -41,6 +41,8 @@ namespace Platformer.Model
 
 		private List<Gem> gems = new List<Gem>();
 		private List<Enemy> enemies = new List<Enemy>();
+		public List<Projectile> bullets = new List<Projectile>();
+
 
 		// Key locations in the level.        
 		private Vector2 start;
@@ -405,7 +407,8 @@ namespace Platformer.Model
 				timeRemaining -= gameTime.ElapsedGameTime;
 				Player.Update(gameTime , keyboardState , gamePadState , orientation);
 				UpdateGems(gameTime);
-				player.UpdateBullets();
+				UpdateBullets(gameTime);
+
 
 				// Falling off the bottom of the level kills the player.
 				if(Player.BoundingRectangle.Top >= Height * Tile.Height)
@@ -449,6 +452,48 @@ namespace Platformer.Model
 		}
 
 		/// <summary>
+		/// Animates each bullet and checks to allows the player to collect them.
+		/// </summary>
+		private void UpdateBullets(GameTime gameTime)
+		{
+			for(int i = 0; i < bullets.Count; ++i)
+			{
+				Projectile bullet = bullets[i];
+
+				// Projectile vs Enemy Collision
+
+
+
+
+
+				bullet.Update(/*gameTime*/);
+
+				for(int j = 0; j < enemies.Count; j++)
+				{
+					// Create the rectangles we need to determine if we collided with each other
+					Rectangle rectangle1 = new Rectangle((int)bullets[i].Position.X -
+					bullets[i].Width / 2 , (int)bullets[i].Position.Y -
+					bullets[i].Height / 2 , bullets[i].Width , bullets[i].Height);
+
+
+
+					Rectangle rectangle2 = new Rectangle((int)enemies[j].Position.X - enemies[j].Width / 2 ,
+					(int)enemies[j].Position.Y - enemies[j].Height / 2 ,
+					40 , 60);
+
+					// Determine if the two objects collided with each other
+					if(rectangle1.Intersects(rectangle2))
+					{
+						enemies[j].Health -= bullets[i].Damage;
+						bullets[i].Active = false;
+					}
+				}
+
+
+			}
+
+		}
+		/// <summary>
 		/// Animates each enemy and allow them to kill the player.
 		/// </summary>
 		private void UpdateEnemies(GameTime gameTime)
@@ -461,6 +506,20 @@ namespace Platformer.Model
 				if(enemy.BoundingRectangle.Intersects(Player.BoundingRectangle))
 				{
 					OnPlayerKilled(enemy);
+				}
+
+				foreach(Projectile bullet in bullets)
+				{
+					if(enemy.enemyIsAlive && enemy.BoundingRectangle.Contains(bullet.BoundingRectangle) && bullet.Active)
+					{
+						enemy.Health -= bullet.Damage;
+						bullet.Active = false;
+					}
+				}
+
+				if(enemy.Health <= 0)
+				{
+					onEnemyKilled(enemy , Player);
 				}
 			}
 		}
@@ -475,6 +534,12 @@ namespace Platformer.Model
 			score += Gem.PointValue;
 
 			gem.OnCollected(collectedBy);
+		}
+
+		private void onEnemyKilled(Enemy enemy , Player killedBy)
+		{
+			enemy.onKilled(killedBy);
+
 		}
 
 		/// <summary>
@@ -535,6 +600,9 @@ namespace Platformer.Model
 
 			foreach(Enemy enemy in enemies)
 				enemy.Draw(gameTime , spriteBatch);
+
+			foreach(Projectile bullet in bullets)
+				bullet.Draw(spriteBatch);
 
 			spriteBatch.End();
 

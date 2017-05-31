@@ -141,9 +141,11 @@ namespace Platformer.Model
 
 
 			bullets = new List<Projectile>();
+			isShooting = false;
 
 			// Set the laser to fire every quarter second
 			fireTime = TimeSpan.FromSeconds(.15f);
+
 
 			LoadContent();
 
@@ -185,6 +187,7 @@ namespace Platformer.Model
 			Position = position;
 			Velocity = Vector2.Zero;
 			isAlive = true;
+			isShooting = false;
 			sprite.PlayAnimation(idleAnimation);
 		}
 
@@ -206,7 +209,7 @@ namespace Platformer.Model
             //this.viewport = viewport;
 
 			ApplyPhysics(gameTime);
-			Shoot(); 
+			Shoot(gameTime); 
 
 			if(IsAlive && IsOnGround)
 			{
@@ -225,6 +228,7 @@ namespace Platformer.Model
 			// Clear input.
 			movement = 0.0f;
 			isJumping = false;
+			isShooting = false;
 		}
 
 		/// <summary>
@@ -266,6 +270,8 @@ namespace Platformer.Model
 				keyboardState.IsKeyDown(Keys.W);
 
 			isShooting = keyboardState.IsKeyDown(Keys.Space);
+
+
 		}
 
 		/// <summary>
@@ -440,7 +446,7 @@ namespace Platformer.Model
 		/// </param>
 		public void OnKilled(Enemy killedBy)
 		{
-			isAlive = false;
+			this.isAlive = false;
 
 			if(killedBy != null)
 				killedSound.Play();
@@ -450,9 +456,9 @@ namespace Platformer.Model
 			sprite.PlayAnimation(dieAnimation);
 		}
 
-		public void Shoot()
+		public void Shoot(GameTime gametime)
 		{
-			if(isShooting == true)
+			if(isShooting == true && gameTime != null)
 			{
 				// Fire only every interval we set as the fireTime
  			if(gameTime.TotalGameTime - previousFireTime > fireTime)
@@ -461,7 +467,7 @@ namespace Platformer.Model
 				previousFireTime = gameTime.TotalGameTime;
 
 
-					AddBullet(this.position.X , this.position.Y , 2 , 0 , 0 , 0);
+					AddBullet(this.position.X , this.position.Y -40 , 2 , 0 , 0 , 0);
 
 
 				
@@ -472,10 +478,10 @@ namespace Platformer.Model
 
 		public void AddBullet(float x , float y , float speed , int gx , int gy , int angle)
 		{
-			Projectile projectile = new Projectile(x , y , speed , gx , gy , angle);
+			Projectile bullet = new Projectile(x , y , speed , gx , gy , angle);
 			Vector2 position = new Vector2(x , y);
-			projectile.Initialize(bulletTexture , position);
-			bullets.Add(projectile);
+			bullet.Initialize(bulletTexture , position);
+			level.bullets.Add(bullet);
 		}
 
 		public void UpdateBullets()
