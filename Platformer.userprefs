@@ -1,12 +1,13 @@
 ﻿<Properties StartupConfiguration="{DFE85C12-724C-4B24-B017-E769718FF75A}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Platformer/Model/Enemy.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../FirstApp/FirstApp/Controller/SteampunkShooter.cs">
     <Files>
-      <File FileName="Platformer/Controller/PlatformerGame.cs" Line="117" Column="1" />
-      <File FileName="Platformer/Model/Level.cs" Line="494" Column="28" />
-      <File FileName="Platformer/Model/Player.cs" Line="133" Column="4" />
+      <File FileName="Platformer/Controller/PlatformerGame.cs" Line="241" Column="33" />
+      <File FileName="Platformer/Model/Level.cs" Line="469" Column="7" />
+      <File FileName="Platformer/Model/Player.cs" Line="55" Column="22" />
       <File FileName="Platformer/Model/Projectile.cs" Line="26" Column="5" />
       <File FileName="Platformer/Controller/Program.cs" Line="29" Column="1" />
-      <File FileName="Platformer/Model/Enemy.cs" Line="56" Column="28" />
+      <File FileName="Platformer/Model/Enemy.cs" Line="104" Column="19" />
+      <File FileName="../FirstApp/FirstApp/Controller/SteampunkShooter.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

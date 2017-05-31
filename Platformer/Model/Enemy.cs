@@ -41,6 +41,17 @@ namespace Platformer.Model
 		}
 		int health;
 
+		public int Width
+		{
+			get { return localBounds.Width; }
+		}
+
+		// Get the height of the projectile ship
+		public int Height
+		{
+			get { return localBounds.Height; }
+		}
+
 		/// <summary>
 		/// Position in world space of the bottom center of this enemy.
 		/// </summary>
@@ -50,12 +61,7 @@ namespace Platformer.Model
 		}
 		Vector2 position;
 
-		public bool IsAlive
-		{
-			get { return isAlive; }
-			set { isAlive = value; }
-		}
-		bool isAlive;
+		public bool enemyIsAlive { get; private set; }
 
 		private Rectangle localBounds;
 		/// <summary>
@@ -105,8 +111,8 @@ namespace Platformer.Model
 		{
 			this.level = level;
 			this.position = position;
-			this.isAlive = true;
-			this.health = 50;
+			this.enemyIsAlive = true;
+			this.health = 10;
 
 			LoadContent(spriteSet);
 		}
@@ -138,6 +144,9 @@ namespace Platformer.Model
 		public void Update(GameTime gameTime)
 		{
 			float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+			if(!enemyIsAlive)
+				return;
 
 			// Calculate tile position based on the side we are walking towards.
 			float posX = Position.X + localBounds.Width / 2 * (int)direction;
@@ -177,16 +186,16 @@ namespace Platformer.Model
 		public void Draw(GameTime gameTime , SpriteBatch spriteBatch)
 		{
 			// Stop running when the game is paused or before turning around.
-			if(!Level.Player.IsAlive ||
-				Level.ReachedExit ||
-				Level.TimeRemaining == TimeSpan.Zero ||
-				waitTime > 0)
-			{
-				sprite.PlayAnimation(idleAnimation);
-			}
-			else if(this.isAlive == false)
+			if(!enemyIsAlive)
 			{
 				sprite.PlayAnimation(dieAnimation);
+			}
+			else if(!Level.Player.IsAlive ||
+					  Level.ReachedExit ||
+					  Level.TimeRemaining == TimeSpan.Zero ||
+					  waitTime > 0)
+			{
+				sprite.PlayAnimation(idleAnimation);
 			}
 			else
 			{
@@ -194,9 +203,16 @@ namespace Platformer.Model
 			}
 
 
+
+
 			// Draw facing the way the enemy is moving.
 			SpriteEffects flip = direction > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 			sprite.Draw(gameTime , spriteBatch , Position , flip);
+		}
+
+		public void onKilled(Player killedBy)
+		{
+			enemyIsAlive = false;
 		}
 	}
 }

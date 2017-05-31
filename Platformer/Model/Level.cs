@@ -460,7 +460,34 @@ namespace Platformer.Model
 			{
 				Projectile bullet = bullets[i];
 
+				// Projectile vs Enemy Collision
+
+
+
+
+
 				bullet.Update(/*gameTime*/);
+
+				for(int j = 0; j < enemies.Count; j++)
+				{
+					// Create the rectangles we need to determine if we collided with each other
+					Rectangle rectangle1 = new Rectangle((int)bullets[i].Position.X -
+					bullets[i].Width / 2 , (int)bullets[i].Position.Y -
+					bullets[i].Height / 2 , bullets[i].Width , bullets[i].Height);
+
+
+
+					Rectangle rectangle2 = new Rectangle((int)enemies[j].Position.X - enemies[j].Width / 2 ,
+					(int)enemies[j].Position.Y - enemies[j].Height / 2 ,
+					40 , 60);
+
+					// Determine if the two objects collided with each other
+					if(rectangle1.Intersects(rectangle2))
+					{
+						enemies[j].Health -= bullets[i].Damage;
+						bullets[i].Active = false;
+					}
+				}
 
 
 			}
@@ -480,18 +507,19 @@ namespace Platformer.Model
 				{
 					OnPlayerKilled(enemy);
 				}
+
 				foreach(Projectile bullet in bullets)
 				{
-					if(enemy.BoundingRectangle.Intersects(bullet.BoundingRectangle))
+					if(enemy.enemyIsAlive && enemy.BoundingRectangle.Contains(bullet.BoundingRectangle) && bullet.Active)
 					{
 						enemy.Health -= bullet.Damage;
 						bullet.Active = false;
 					}
 				}
 
-				if(enemy.Health >= 0)
+				if(enemy.Health <= 0)
 				{
-					enemy.IsAlive = false;
+					onEnemyKilled(enemy , Player);
 				}
 			}
 		}
@@ -506,6 +534,12 @@ namespace Platformer.Model
 			score += Gem.PointValue;
 
 			gem.OnCollected(collectedBy);
+		}
+
+		private void onEnemyKilled(Enemy enemy , Player killedBy)
+		{
+			enemy.onKilled(killedBy);
+
 		}
 
 		/// <summary>

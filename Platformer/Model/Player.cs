@@ -141,9 +141,11 @@ namespace Platformer.Model
 
 
 			bullets = new List<Projectile>();
+			isShooting = false;
 
 			// Set the laser to fire every quarter second
 			fireTime = TimeSpan.FromSeconds(.15f);
+
 
 			LoadContent();
 
@@ -185,6 +187,7 @@ namespace Platformer.Model
 			Position = position;
 			Velocity = Vector2.Zero;
 			isAlive = true;
+			isShooting = false;
 			sprite.PlayAnimation(idleAnimation);
 		}
 
@@ -206,7 +209,7 @@ namespace Platformer.Model
             //this.viewport = viewport;
 
 			ApplyPhysics(gameTime);
-			Shoot(); 
+			Shoot(gameTime); 
 
 			if(IsAlive && IsOnGround)
 			{
@@ -443,7 +446,7 @@ namespace Platformer.Model
 		/// </param>
 		public void OnKilled(Enemy killedBy)
 		{
-			isAlive = false;
+			this.isAlive = false;
 
 			if(killedBy != null)
 				killedSound.Play();
@@ -453,22 +456,22 @@ namespace Platformer.Model
 			sprite.PlayAnimation(dieAnimation);
 		}
 
-		public void Shoot()
+		public void Shoot(GameTime gametime)
 		{
-			if(isShooting == true)
+			if(isShooting == true && gameTime != null)
 			{
 				// Fire only every interval we set as the fireTime
- 			//if(gameTime.TotalGameTime - previousFireTime > fireTime)
-			//{
+ 			if(gameTime.TotalGameTime - previousFireTime > fireTime)
+			{
 				// Reset our current time
-				//previousFireTime = gameTime.TotalGameTime;
+				previousFireTime = gameTime.TotalGameTime;
 
 
-					AddBullet(this.position.X , this.position.Y - 50 , 2 , 0 , 0 , 0);
+					AddBullet(this.position.X , this.position.Y -40 , 2 , 0 , 0 , 0);
 
 
 				
-			//}
+			}
 			
 			}
 		}
