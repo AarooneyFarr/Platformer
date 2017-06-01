@@ -59,6 +59,8 @@ namespace Platformer.Controller
 		public PlatformerGame()
 		{
 			graphics = new GraphicsDeviceManager(this);
+           // graphics.PreferredBackBufferHeight = 800;
+          //  graphics.PreferredBackBufferWidth = 1200;
 			Content.RootDirectory = "Content";
 
 #if WINDOWS_PHONE

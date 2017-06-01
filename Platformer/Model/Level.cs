@@ -79,9 +79,10 @@ namespace Platformer.Model
 			get { return content; }
 		}
 		ContentManager content;
+        public Viewport viewport;
 
 		private SoundEffect exitReachedSound;
-
+        private Animation dieAnimation;
 
 
 
@@ -119,7 +120,9 @@ namespace Platformer.Model
 
 			// Load sounds.
 			exitReachedSound = Content.Load<SoundEffect>("Sounds/ExitReached");
-		}
+
+            dieAnimation = new Animation(this.Content.Load<Texture2D>("explosion"), 0.1f, true);
+        }
 
 		/// <summary>
 		/// Iterates over every tile in the structure file and loads its
@@ -472,14 +475,12 @@ namespace Platformer.Model
 				{
 					// Create the rectangles we need to determine if we collided with each other
 					Rectangle rectangle1 = new Rectangle((int)bullets[i].Position.X -
-					bullets[i].Width / 2 , (int)bullets[i].Position.Y -
-					bullets[i].Height / 2 , bullets[i].Width , bullets[i].Height);
+					bullets[i].Width  , (int)bullets[i].Position.Y -
+					bullets[i].Height  , bullets[i].Width , bullets[i].Height);
 
 
 
-					Rectangle rectangle2 = new Rectangle((int)enemies[j].Position.X - enemies[j].Width / 2 ,
-					(int)enemies[j].Position.Y - enemies[j].Height / 2 ,
-					40 , 60);
+                    Rectangle rectangle2 = enemies[j].BoundingRectangle;
 
 					// Determine if the two objects collided with each other
 					if(rectangle1.Intersects(rectangle2))
@@ -498,28 +499,30 @@ namespace Platformer.Model
 		/// </summary>
 		private void UpdateEnemies(GameTime gameTime)
 		{
-			foreach(Enemy enemy in enemies)
+            for (int i = 0; i < enemies.Count; i++)
 			{
-				enemy.Update(gameTime);
+				enemies[i].Update(gameTime);
 
 				// Touching an enemy instantly kills the player
-				if(enemy.BoundingRectangle.Intersects(Player.BoundingRectangle))
+				if(enemies[i].BoundingRectangle.Intersects(Player.BoundingRectangle))
 				{
-					OnPlayerKilled(enemy);
+					OnPlayerKilled(enemies[i]);
 				}
 
 				foreach(Projectile bullet in bullets)
 				{
-					if(enemy.enemyIsAlive && enemy.BoundingRectangle.Contains(bullet.BoundingRectangle) && bullet.Active)
+					if(enemies[i].enemyIsAlive && enemies[i].BoundingRectangle.Contains(bullet.BoundingRectangle) && bullet.Active)
 					{
-						enemy.Health -= bullet.Damage;
+						enemies[i].Health -= bullet.Damage;
 						bullet.Active = false;
 					}
 				}
 
-				if(enemy.Health <= 0)
+				if(enemies[i].Health <= 0)
 				{
-					onEnemyKilled(enemy , Player);
+					onEnemyKilled(enemies[i] , Player);
+                    enemies[i].
+                    enemies.Remove(enemies[i]);
 				}
 			}
 		}
@@ -539,6 +542,7 @@ namespace Platformer.Model
 		private void onEnemyKilled(Enemy enemy , Player killedBy)
 		{
 			enemy.onKilled(killedBy);
+
 
 		}
 
@@ -586,6 +590,7 @@ namespace Platformer.Model
 				layers[i].Draw(spriteBatch , cameraPosition);
 			spriteBatch.End();
 
+            viewport = spriteBatch.GraphicsDevice.Viewport;
 			ScrollCamera(spriteBatch.GraphicsDevice.Viewport);
 			Matrix cameraTransform = Matrix.CreateTranslation(-cameraPosition , 0.0f , 0.0f);
 			//spriteBatch.Begin(SpriteBlendMode.AlphaBlend , SpriteSortMode.Immediate , SaveStateMode.None , cameraTransform);

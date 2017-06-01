@@ -20,10 +20,11 @@ using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Platformer.Model
 {
-	/// <summary>
-	/// Our fearless adventurer!
-	/// </summary>
-	class Player
+
+    /// <summary>
+    /// Our fearless adventurer!
+    /// </summary>
+    class Player
 	{
 		// Animations
 		private Animation idleAnimation;
@@ -41,10 +42,10 @@ namespace Platformer.Model
 		private SoundEffect fallSound;
 		GameTime gameTime;
 
-		private Projectile bullet;
+		//private Projectile bullet;
 		private List<Projectile> bullets;
 
-		private Game gameController;
+		//private Game gameController;
 
 		public Level Level
 		{
@@ -78,7 +79,7 @@ namespace Platformer.Model
 		// Constants for controling horizontal movement
 		private const float MoveAcceleration = 13000.0f;
 		private const float MaxMoveSpeed = 1750.0f;
-		private const float GroundDragFactor = 0.48f;
+		private const float GroundDragFactor = 0.58f;
 		private const float AirDragFactor = 0.58f;
 
 		// Constants for controlling vertical movement
@@ -466,8 +467,26 @@ namespace Platformer.Model
 				// Reset our current time
 				previousFireTime = gameTime.TotalGameTime;
 
+                    double angle = 0;
+                    int velocity = 20;
+                    int ypos = -40;
 
-					AddBullet(this.position.X , this.position.Y -40 , 2 , 0 , 0 , 0);
+                    if (movement == 1)
+                    {
+                        angle = 0;
+                        ypos = -40;
+                        velocity = 20;
+                    }
+                    else if(movement == -1)
+                    {
+                        angle = -3.1415923;
+                        ypos = -30;
+                        velocity = -20;
+                    }
+                    
+
+
+					AddBullet(this.position.X , this.position.Y + ypos , velocity , 0 , 0 , angle);
 
 
 				
@@ -476,7 +495,7 @@ namespace Platformer.Model
 			}
 		}
 
-		public void AddBullet(float x , float y , float speed , int gx , int gy , int angle)
+		public void AddBullet(float x , float y , float speed , int gx , int gy , double angle)
 		{
 			Projectile bullet = new Projectile(x , y , speed , gx , gy , angle);
 			Vector2 position = new Vector2(x , y);

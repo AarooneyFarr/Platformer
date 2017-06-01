@@ -15,7 +15,7 @@ namespace Platformer.Model
 		// Image representing the Projectile
 		public Texture2D Texture;
 
-		private Rectangle localBounds;
+		//private Rectangle localBounds;
 		/// <summary>
 		/// Gets a rectangle which bounds this player in world space.
 		/// </summary>
@@ -79,7 +79,7 @@ namespace Platformer.Model
 
 			Damage = 2;
 
-			projectileMoveSpeed = 20f;
+			//projectileMoveSpeed = 20f;
 		}
 
 
@@ -88,11 +88,7 @@ namespace Platformer.Model
 
 			fire(Position.X , Position.Y , projectileMoveSpeed , gravityX , gravityY , rotation);
 
-			// Deactivate the bullet if it goes out of screen
-			if(Position.X + Texture.Width / 2 > 800)
-			{
-				Active = false;
-			}
+			
 		}
 
 		public void fire(float x , float y , float speed , int gx , int gy , double angle)
@@ -110,7 +106,7 @@ namespace Platformer.Model
 
 			rotation = angle;
 
-			if(Position.X + Texture.Width / 2 > 800)
+			if(Position.X + Texture.Width / 2 > 200000)
 			{
 				Active = false;
 			}
@@ -119,7 +115,12 @@ namespace Platformer.Model
 
 		public void Draw(SpriteBatch spriteBatch)
 		{
-			spriteBatch.Draw(Texture , Position , null , Color.White , (float)rotation , Vector2.Zero , 1f , SpriteEffects.None , 0f);
+            if (Active)
+            {
+
+
+                spriteBatch.Draw(Texture, Position, null, Color.White, (float)rotation, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            }
 
 		}
 

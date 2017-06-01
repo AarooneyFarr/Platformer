@@ -43,13 +43,13 @@ namespace Platformer.Model
 
 		public int Width
 		{
-			get { return localBounds.Width; }
+			get { return BoundingRectangle.Width; }
 		}
 
 		// Get the height of the projectile ship
 		public int Height
 		{
-			get { return localBounds.Height; }
+			get { return BoundingRectangle.Height; }
 		}
 
 		/// <summary>
@@ -112,7 +112,7 @@ namespace Platformer.Model
 			this.level = level;
 			this.position = position;
 			this.enemyIsAlive = true;
-			this.health = 10;
+			this.health = 50;
 
 			LoadContent(spriteSet);
 		}
@@ -204,15 +204,20 @@ namespace Platformer.Model
 
 
 
+           // spriteBatch.Draw(Level.Content.Load<Texture2D>("sprites/Gem"), Position, Color.AliceBlue);
 
 			// Draw facing the way the enemy is moving.
 			SpriteEffects flip = direction > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 			sprite.Draw(gameTime , spriteBatch , Position , flip);
+            
+
 		}
 
 		public void onKilled(Player killedBy)
 		{
 			enemyIsAlive = false;
+            sprite.PlayAnimation(dieAnimation);
+            
 		}
 	}
 }
