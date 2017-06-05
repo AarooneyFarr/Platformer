@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/aaroo/Documents/GitHub/Platformer/Platformer/Content/Sprites/Player/Jump.png</SourceFile>
-  <SourceTime>2017-05-30T16:56:34.2740659-06:00</SourceTime>
+  <SourceTime>2017-06-05T14:40:58.4207931-06:00</SourceTime>
   <DestFile>C:/Users/aaroo/Documents/GitHub/Platformer/Platformer/Content/bin/DesktopGL/Sprites/Player/Jump.xnb</DestFile>
-  <DestTime>2017-05-30T19:20:00.9444467-06:00</DestTime>
+  <DestTime>2017-06-05T14:41:25.756483-06:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T08:05:36-07:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

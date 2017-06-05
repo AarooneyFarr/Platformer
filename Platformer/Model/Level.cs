@@ -521,8 +521,9 @@ namespace Platformer.Model
 				if(enemies[i].Health <= 0)
 				{
 					onEnemyKilled(enemies[i] , Player);
-                    enemies[i].
+                    
                     enemies.Remove(enemies[i]);
+                    i--;
 				}
 			}
 		}
